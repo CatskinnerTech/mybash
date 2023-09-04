@@ -58,7 +58,10 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='autojump bash bash-completion tar neovim bat'
+    DEPENDENCIES1='bash bash-completion'
+    DEPENDENCIES2='autojump'
+    DEPENDENCIES2='autojump-git'
+    DEPENDENCIES3='tar neovim bat'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay; then
@@ -70,7 +73,9 @@ installDepend() {
         fi
     	yay --noconfirm -S ${DEPENDENCIES}
     else 
-    	sudo ${PACKAGER} install -yq ${DEPENDENCIES}
+    	sudo ${PACKAGER} install -yq ${DEPENDENCIES1}
+        sudo ${PACKAGER} install -yq ${DEPENDENCIES2}
+        sudo ${PACKAGER} install -yq ${DEPENDENCIES3}
     fi
 }
 
