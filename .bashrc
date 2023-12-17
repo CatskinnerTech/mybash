@@ -17,6 +17,10 @@ elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
 
+# Start zellij with terminal
+if command -v zellij &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ zellij ]] && [ -z "$ZELLIJ" ]; then
+  exec zellij
+fi
 #######################################################
 # EXPORTS
 #######################################################
@@ -57,6 +61,14 @@ alias nano='edit'
 alias snano='sedit'
 alias vim='nvim'
 alias cat='batcat'
+alias zyp='sudo zypper '
+alias zpr='zypper '
+alias dupper='sudo zypper dup'
+alias sboot='sudo reboot'
+alias fetch='fastfetch'
+alias alac='alacritty'
+alias wez='wezterm'
+alias brave='brave-browser'
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1
@@ -123,6 +135,7 @@ alias freshclam='sudo freshclam'
 alias vi='nvim'
 alias svi='sudo vi'
 alias vis='nvim "+set si"'
+alias zel='zellij'
 
 # Change directory aliases
 alias home='cd ~'
@@ -276,7 +289,7 @@ ftext ()
 	# -I ignore binary files
 	# -H causes filename to be printed
 	# -r recursive search
-	# -n causes line number to be printed
+	/# -n causes line number to be printed
 	# optional: -F treat search term as a literal, not a regular expression
 	# optional: -l only print filenames and not the matching lines ex. grep -irl "$1" *
 	grep -iIHrn --color=always "$1" . | less -r
