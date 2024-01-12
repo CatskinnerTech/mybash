@@ -1,10 +1,10 @@
 #!/bin/bash
+
 iatest=$(expr index "$-" i)
 
 #######################################################
 # SOURCED ALIAS'S AND SCRIPTS BY zachbrowne.me
 #######################################################
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	 . /etc/bashrc
@@ -18,16 +18,13 @@ elif [ -f /etc/bash_completion ]; then
 fi
 
 # Start zellij with terminal
-if command -v zellij &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ zellij ]] && [ -z "$ZELLIJ" ]; then
-  exec zellij
+if command -v zellij &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] \
+    && [[ ! "$TERM" =~ zellij ]] && [ -z "$ZELLIJ" ]; then 
+	exec zellij
 fi
 #######################################################
 # EXPORTS
 #######################################################
-
-# Disable the bell
-if [[ $iatest -gt 0 ]]; then bind "set bell-style visible"; fi
-
 # Expand the history size
 export HISTFILESIZE=10000
 export HISTSIZE=500
@@ -35,10 +32,32 @@ export HISTSIZE=500
 # Don't put duplicate lines in the history and do not add lines that start with a space
 export HISTCONTROL=erasedups:ignoredups:ignorespace
 
+# Set the default editor
+export EDITOR=nvim
+export VISUAL=nvim
+
+
+# To have colors for ls and all grep commands such as grep, egrep and zgrep
+export CLICOLOR=1
+export LS_COLORS='no=00:fi=00:di=00;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:*.xml=00;31:'
+
+# Color for manpages in less makes manpages a little easier to read
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+
+#######################################################
+# Disable the bell
+if [[ $iatest -gt 0 ]]; then bind "set bell-style visible"; fi
+
 # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS
 shopt -s checkwinsize
 
-# Causes bash to append to history instead of overwriting it so if you start a new terminal, you have old session history
+# Causes bash to append to history instead of overwriting it so if you start a new terminal, you have old session history 
 shopt -s histappend
 PROMPT_COMMAND='history -a'
 
@@ -52,39 +71,38 @@ if [[ $iatest -gt 0 ]]; then bind "set completion-ignore-case on"; fi
 # Show auto-completion list automatically, without double tab
 if [[ $iatest -gt 0 ]]; then bind "set show-all-if-ambiguous On"; fi
 
-# Set the default editor
-export EDITOR=nvim
-export VISUAL=nvim
+#######################################################
+# Aliases
+#######################################################
+# Editor Commands
 alias pico='edit'
 alias spico='sedit'
 alias nano='edit'
 alias snano='sedit'
 alias vim='nvim'
-alias cat='batcat'
+alias vi='nvim'
+alias svi='sudo vi'
+alias vis='nvim "+set si"'
+
+# Package Manger Comamnds
 alias zyp='sudo zypper '
 alias zpr='zypper '
 alias dupper='sudo zypper dup'
-alias sboot='sudo reboot'
-alias fetch='fastfetch'
-alias alac='alacritty'
-alias wez='wezterm'
-alias brave='brave-browser'
+alias flat='sudo flatpak '
 
-# To have colors for ls and all grep commands such as grep, egrep and zgrep
-export CLICOLOR=1
-export LS_COLORS='no=00:fi=00:di=00;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:*.xml=00;31:'
-#export GREP_OPTIONS='--color=auto' #deprecated
+# System Commands
+alias reboot='sudo reboot'
+alias shutdown="sudo shutdown"
 alias grep="/usr/bin/grep $GREP_OPTIONS"
 unset GREP_OPTIONS
 
-# Color for manpages in less makes manpages a little easier to read
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[01;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
+# Packages Commands
+alias alac='alacritty'
+alias wez='wezterm'
+alias zel='zellij'
+alias fetch='fastfetch'
+alias brave='brave-browser'
+
 
 #######################################################
 # MACHINE SPECIFIC ALIAS'S
@@ -132,10 +150,6 @@ alias cls='clear'
 alias apt-get='sudo apt-get'
 alias multitail='multitail --no-repeat -c'
 alias freshclam='sudo freshclam'
-alias vi='nvim'
-alias svi='sudo vi'
-alias vis='nvim "+set si"'
-alias zel='zellij'
 
 # Change directory aliases
 alias home='cd ~'
@@ -201,7 +215,8 @@ alias rebootforce='sudo shutdown -r -n now'
 # Alias's to show disk space and space used in a folder
 alias diskspace="du -S | sort -n -r |more"
 alias folders='du -h --max-depth=1'
-alias folderssort='find . -maxdepth 1 -type d -print0 | xargs -0 du -sk | sort -rn'
+alias folderssort='find . -maxdepth 1 -type d -print0 | xargs -0 du -sk | sort
+-rn'
 alias tree='tree -CAhF --dirsfirst'
 alias treed='tree -CAFd'
 alias mountedinfo='df -hT'
@@ -221,10 +236,6 @@ alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' 
 alias sha1='openssl sha1'
 
 alias clickpaste='sleep 3; xdotool type "$(xclip -o -selection clipboard)"'
-
-# KITTY - alias to be able to use kitty features when connecting to remote servers(e.g use tmux on remote server)
-
-alias kssh="kitty +kitten ssh"
 
 #######################################################
 # SPECIAL FUNCTIONS
@@ -381,28 +392,28 @@ distribution ()
 	local dtype
 	# Assume unknown
 	dtype="unknown"
-	
+
 	# First test against Fedora / RHEL / CentOS / generic Redhat derivative
 	if [ -r /etc/rc.d/init.d/functions ]; then
 		source /etc/rc.d/init.d/functions
 		[ zz`type -t passed 2>/dev/null` == "zzfunction" ] && dtype="redhat"
-	
+
 	# Then test against SUSE (must be after Redhat,
 	# I've seen rc.status on Ubuntu I think? TODO: Recheck that)
 	elif [ -r /etc/rc.status ]; then
 		source /etc/rc.status
 		[ zz`type -t rc_reset 2>/dev/null` == "zzfunction" ] && dtype="suse"
-	
+
 	# Then test against Debian, Ubuntu and friends
 	elif [ -r /lib/lsb/init-functions ]; then
 		source /lib/lsb/init-functions
 		[ zz`type -t log_begin_msg 2>/dev/null` == "zzfunction" ] && dtype="debian"
-	
+
 	# Then test against Gentoo
 	elif [ -r /etc/init.d/functions.sh ]; then
 		source /etc/init.d/functions.sh
 		[ zz`type -t ebegin 2>/dev/null` == "zzfunction" ] && dtype="gentoo"
-	
+
 	# For Mandriva we currently just test if /etc/mandriva-release exists
 	# and isn't empty (TODO: Find a better way :)
 	elif [ -s /etc/mandriva-release ]; then
@@ -497,15 +508,15 @@ alias whatismyip="whatsmyip"
 function whatsmyip ()
 {
 	# Dumps a list of all IP addresses for every device
-	# /sbin/ifconfig |grep -B1 "inet addr" |awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' |awk -F: '{ print $1 ": " $3 }';
-	
+	# /sbin/ifconfig |grep -B1 "inet addr" |awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' |awk -F: '{ print $1 ": "$3 }';
+
 	### Old commands
 	# Internal IP Lookup
 	#echo -n "Internal IP: " ; /sbin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
 #
 #	# External IP Lookup
 	#echo -n "External IP: " ; wget http://smart-ip.net/myip -O - -q
-	
+
 	# Internal IP Lookup.
 	if [ -e /sbin/ip ];
 	then
@@ -514,7 +525,7 @@ function whatsmyip ()
 		echo -n "Internal IP: " ; /sbin/ifconfig wlan0 | grep "inet " | awk -F: '{print $1} |' | awk '{print $2}'
 	fi
 
-	# External IP Lookup 
+	# External IP Lookup
 	echo -n "External IP: " ; curl -s ifconfig.me
 }
 
@@ -598,7 +609,8 @@ trim()
 {
 	local var=$*
 	var="${var#"${var%%[![:space:]]*}"}"  # remove leading whitespace characters
-	var="${var%"${var##*[![:space:]]}"}"  # remove trailing whitespace characters
+	var="${var%"${var##*[![:space:]]}"}"  # remove trailing whitespace
+characters
 	echo -n "$var"
 }
 # GitHub Titus Additions
@@ -612,6 +624,17 @@ lazyg() {
 	git commit -m "$1"
 	git push
 }
+# Github Catskinner Additions
+gcm() {
+	git add .
+	git commit -m "$1"
+	}
+gpsh() {
+	git add .
+	git commit -m "$1"
+	git push
+}
+
 
 alias lookingglass="~/looking-glass-B5.0.1/client/build/looking-glass-client -F"
 #######################################################
